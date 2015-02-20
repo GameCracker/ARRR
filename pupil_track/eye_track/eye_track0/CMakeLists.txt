@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project(eyeTrack)
+find_package(OpenCV REQUIRED)
+add_executable(eyeTrack eyeTrack.cpp)
+target_link_libraries(eyeTrack ${OpenCV_LIBS})

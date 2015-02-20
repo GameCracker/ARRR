@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project(objectDetection)
+find_package(OpenCV REQUIRED)
+add_executable(objectDetection objectDetection.cpp)
+target_link_libraries(objectDetection ${OpenCV_LIBS})

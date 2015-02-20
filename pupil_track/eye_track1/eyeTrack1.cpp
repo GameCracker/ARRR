@@ -1,0 +1,132 @@
+#include "opencv2/opencv.hpp"
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <cmath>
+#include <stdio.h>
+
+using namespace cv;
+
+
+int pupil_track() {
+  Mat src = imread("eye_image.jpg");
+  if(src.empty())
+    return -1;
+  Mat gray;
+  cvtColor(~src, gray, CV_BGR2GRAY);
+  // find round shape
+  threshold(gray, gray, 220, 255, THRESH_BINARY);
+  // remove interior noise
+  std::vector<std::vector<Point> > contours;
+  findContours(gray.clone(), contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+  // fill holes in each contour
+  drawContours(gray, contours, -1, CV_RGB(255, 255, 255), -1);
+  for(int i = 0; i < contours.size(); i++) {
+    double area = contourArea(contours[i]);
+    Rect rect = boundingRect(contours[i]);
+    int radius = rect.width/2;
+    if(area >= 30 && std::abs(1 - ((double)rect.width/(double)rect.height)) <= 0.2 && std::abs(1 - (area/(CV_PI*std::pow(radius, 2)))) <= 0.2) {
+      circle(src, Point(rect.x + radius, rect.y + radius), radius, CV_RGB(255, 0, 0), 2);
+    }
+  }
+  imshow("image", src);
+  waitKey(0);
+  return 0;
+}
+
+int eye_track() {
+  return 0;
+}
+
+int rt_track() {
+  VideoCapture cap(0);
+  if(!cap.isOpened())
+    return -1;
+  Mat edges;
+  namedWindow("track", 1);
+  for(;;) {
+    Mat frame;
+    cap >> frame;
+    Mat gray;
+    cvtColor(~frame, gray, CV_BGR2GRAY);
+    // find round shape
+    threshold(gray, gray, 220, 255, THRESH_BINARY);
+    // remove interior noise
+    std::vector<std::vector<Point> > contours;
+    findContours(gray.clone(), contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    // fill holes in each contour
+    drawContours(gray, contours, -1, CV_RGB(255, 255, 255), -1);
+    for(int i = 0; i < contours.size(); i++) {
+      double area = contourArea(contours[i]);
+      Rect rect = boundingRect(contours[i]);
+      int radius = rect.width/2;
+      if(area >= 30 && std::abs(1 - ((double)rect.width/(double)rect.height)) <= 0.2 && std::abs(1 - (area/(CV_PI*std::pow(radius, 2)))) <= 0.2) {
+	circle(frame, Point(rect.x + radius, rect.y + radius), radius, CV_RGB(255, 0, 0), 2);
+      }
+    }
+    imshow("track", frame);
+    //    waitKey(0);
+    if(waitKey(30) >= 0) {
+      break;
+    }
+  }
+}
+
+int rt_track1() {
+  VideoCapture cap(0);
+  if(!cap.isOpened())
+    return -1;
+  Mat track;
+  Mat frame;
+  double area;
+  Rect rect;
+  int radius;
+  std::vector<std::vector<Point> > contours;
+  namedWindow("track", 1);
+  for(;;) {
+    cap >> frame;
+    cvtColor(~frame, track, CV_BGR2GRAY);
+    threshold(track, track, 220, 255, THRESH_BINARY);
+    findContours(track.clone(), contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    drawContours(track, contours, -1, CV_RGB(255, 255, 255), -1);
+    for(int i = 0; i < contours.size(); i++) {
+      area = contourArea(contours[i]);	// Blob area
+      rect = boundingRect(contours[i]);
+      radius = rect.width/2;
+      printf("i: %d, area: %f, radius: %d\n", i, area, radius);
+      if(area >= 10 && std::abs(1 - ((double)rect.width/(double)rect.height)) <= 0.2 && std::abs(1 - (area/(CV_PI*std::pow(radius, 2)))) <= 0.2) {
+	printf("circle");
+	circle(frame, Point(rect.x + radius, rect.y + radius), radius, CV_RGB(255, 0, 0), 2);
+      }
+    }
+    imshow("track", frame);	
+    if(waitKey(30) >= 0)
+      break;
+  }
+  return 0;
+}
+
+int rt_record() {
+  VideoCapture cap(0);
+  if(!cap.isOpened())
+    return -1;
+  Mat edges;
+  namedWindow("edges", 1);
+  for(;;) {
+    Mat frame;
+    cap >> frame;
+    cvtColor(frame, edges, CV_BGR2GRAY);
+    GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
+    Canny(edges, edges, 0, 30, 3);
+    imshow("edges", edges);
+    if(waitKey(30) >= 0)
+      break;
+  }
+  return 0;
+}
+
+int main(int argc, char** argv) {
+  rt_track1();
+  //  rt_track();
+  //rt_record();
+  return 0;
+}
