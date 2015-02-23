@@ -103,8 +103,10 @@ int move_cursor(int w, int h, double x, double y, int t) {
   scr_h_str = trim_right(scr_h_str);
   int scr_w = atoi(scr_w_str.c_str());
   int scr_h = atoi(scr_h_str.c_str());
-  int pos_x = (int)(x/((double)w))*((double)scr_w);
-  int pos_y = (int)(y/((double)h))*((double)scr_h);
+  int pos_x = (int)((x/((double)w))*((double)scr_w));
+  //  cout << "pos_x: " << pos_x << ", scr_w: " << scr_w << ", x: " << x << ", w: " << w << endl;
+  int pos_y = (int)((y/((double)h))*((double)scr_h));
+  cout << "pos_y: " << pos_y << endl;
   string cmd = "xdotool mousemove ";
   ostringstream ss;
   ss << pos_x;
@@ -120,7 +122,6 @@ int move_cursor(int w, int h, double x, double y, int t) {
     cmd.append(" click ");
     ss.clear();
     ss.str("");
-    cout << "t: " << t << endl;
     cout << "click(t): " << click(t) << endl;
     ss << click(t);
     cmd.append(ss.str());
@@ -132,7 +133,7 @@ int move_cursor(int w, int h, double x, double y, int t) {
 int main(int argc, char *argv[]) {
   string str;
   //getline(cin, str);
-  move_cursor(300, 300, 150, 150, 1);
+  move_cursor(300, 300, 150.0, 150.0, 1);
   //cout << "Command entered: " << str << endl;
   //exec1(str);
 }
