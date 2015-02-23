@@ -132,7 +132,14 @@ int move_cursor(int w, int h, double x, double y, int t) {
   exec1(cmd);
 }
 
+int virtual_keyboard() {
+  string cmd = "onboard";
+  exec1(cmd);
+  return 0;
+}
+
 int main(int argc, char *argv[]) {
+  /*
   string command;
   string types0[] = {"int", "int *"};
   string types1[] = {"double", "double *"};
@@ -161,7 +168,9 @@ int main(int argc, char *argv[]) {
       move_cursor(argv[0], argv[1], argv[2], argv[3]);
     }
   }
+  */
   string str;
+  virtual_keyboard();
   //getline(cin, str);
   move_cursor(300, 300, 150.0, 150.0, 1);
   //cout << "Command entered: " << str << endl;
