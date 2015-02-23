@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <sstream>
+#include <typeinfo>
 
 using namespace std;
 
@@ -131,15 +133,37 @@ int move_cursor(int w, int h, double x, double y, int t) {
 }
 
 int main(int argc, char *argv[]) {
+  string command;
+  string types0[] = {"int", "int *"};
+  string types1[] = {"double", "double *"};
+  if(argc != 4) {
+    cout << "Please pass in 4 input, int: video screen weight, int: video screen height, double: current pupil center x, double: current pupil center y, int: subsequent eye blink times.\n" << endl;
+    getline(cin, command);
+  }
+  else {
+    if(!strcmp(typeid(argv[0]).name(), types0[0].c_str()) && 
+       !strcmp(typeid(argv[0]).name(), types0[1].c_str())) {
+       cout << "1st input must be int" << endl;
+    }  
+    else if(!strcmp(typeid(argv[1]).name(), types0[0].c_str()) &&
+	    !strcmp(typeid(argv[1]).name(), types0[1].c_str())) {
+       cout << "2nd input must be int" << endl;
+    }
+    else if(!strcmp(typeid(argv[2]).name(), types1[0].c_str()) &&
+	    !strcmp(typeid(argv[2]).name(), types1[1].c_str())) {
+       cout << "3rd input must be double" << endl;
+    }
+    else if(!strcmp(typeid(argv[3]).name(), types1[0].c_str()) &&
+	    !strcmp(typeid(argv[3]).name(), types1[1].c_str())) {
+       cout << "4th input must be double" << endl;
+    }
+    else {
+      move_cursor(argv[0], argv[1], argv[2], argv[3]);
+    }
+  }
   string str;
   //getline(cin, str);
   move_cursor(300, 300, 150.0, 150.0, 1);
   //cout << "Command entered: " << str << endl;
   //exec1(str);
 }
-
-
-
-
-
-
