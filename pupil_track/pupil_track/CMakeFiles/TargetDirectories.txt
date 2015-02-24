@@ -1,0 +1,1 @@
+/media/psf/Dropbox/bci/x/ar/pupil_track/pupil_track/CMakeFiles/PupilFind.dir

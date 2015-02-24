@@ -125,7 +125,8 @@ int rt_record() {
 }
 
 int main(int argc, char** argv) {
-  rt_track1();
+  //rt_track1();
+  pupil_track();
   //  rt_track();
   //rt_record();
   return 0;

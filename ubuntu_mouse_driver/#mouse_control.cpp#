@@ -132,6 +132,14 @@ int move_cursor(int w, int h, double x, double y, int t) {
   exec1(cmd);
 }
 
+int cursor_control() {
+  Display *dpy;
+  Window root_window;
+  dpy = XOpenDisplay(0);
+  root_window = XRootWindow(dpy, 0);
+  X
+}
+
 int double_pupils() {
 
 }

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project(PupilFind)
+find_package(OpenCV REQUIRED)
+add_executable(PupilFind pupil_find.cpp)
+target_link_libraries(PupilFind ${OpenCV_LIBS})
