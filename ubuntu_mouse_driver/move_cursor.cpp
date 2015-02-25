@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <unistd.h>
+#include <X11/Xatom.h>
 
 using namespace std;
 
@@ -59,6 +60,23 @@ void x_move() {
     }*/
 }
 
+void keep_move() {
+	Display *dpy = XOpenDisplay(0);
+	int x, y;
+	for(x = 0, y = 0; y < 1440; x += 100, y += 100) {
+		Window root_window;
+		root_window = XRootWindow(dpy, 0);
+		printf("XWarpPointer(): x=%5d, y=%5d\n", x, y);
+		XSelectInput(dpy, root_window, KeyReleaseMask);
+		XWarpPointer(dpy, None, root_window, 0, 0, 0, 0, x, y);
+		sleep(1);
+		//XSync(dpy, False);
+		cout << "line " << __LINE__ << endl;
+		XFlush(dpy);
+		XSync(dpy, False);
+	}
+}
+
 void set_cursor() {
 
 }
@@ -82,5 +100,5 @@ void move_cursor() {
 
 int main(int argc, char *argv[]) {
   //  move_cursor();
-  x_move();
+  keep_move();
 }
