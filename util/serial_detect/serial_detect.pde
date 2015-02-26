@@ -15,8 +15,8 @@ void setup() {
   // get the number of list of serial ports
   num_ports = Serial.list().length;
   // save the current list of serial ports
-  port_list = now String[num_ports];
-  for(int i = 0l i < num_ports; i++) {
+  port_list = new String[num_ports];
+  for(int i = 0; i < num_ports; i++) {
     port_list[i] = Serial.list()[i]; 
   }
 }
@@ -54,7 +54,7 @@ void draw() {
   if(device_detected) {
     text("Device detected:", 20, 110);
     textFont(fnt, 18);
-    textFont(detected_port, 20, 150); 
+    text(detected_port, 20, 150); 
   }
 }
 
