@@ -16,7 +16,7 @@ void loop() {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, LOW);
-  duration = (pulseIn(echoPin, HIGH);
+  duration = pulseIn(echoPin, HIGH);
   distance = (duration/2)/29.1;
   if(distance < 4) {
     digitalWrite(led, HIGH);
@@ -31,7 +31,7 @@ void loop() {
   }
   else {
     Serial.print(distance);
-    Serial.printlm(" cm"); 
+    Serial.println(" cm"); 
   }
   delay(500);
 }
