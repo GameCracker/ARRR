@@ -1,0 +1,1 @@
+/media/psf/Dropbox/bci/x/ar/facial_recog/photo_capture/CMakeFiles/result.dir
