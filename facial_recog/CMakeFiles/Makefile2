@@ -47,10 +47,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
+CMAKE_SOURCE_DIR = "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
+CMAKE_BINARY_DIR = "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog"
 
 #=============================================================================
 # Target rules for target CMakeFiles/faceRecog.dir
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
 CMakeFiles/faceRecog.dir/all:
 	$(MAKE) -f CMakeFiles/faceRecog.dir/build.make CMakeFiles/faceRecog.dir/depend
 	$(MAKE) -f CMakeFiles/faceRecog.dir/build.make CMakeFiles/faceRecog.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles  1
+	$(CMAKE_COMMAND) -E cmake_progress_report "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles"  1
 	@echo "Built target faceRecog"
 .PHONY : CMakeFiles/faceRecog.dir/all
 
@@ -69,9 +69,9 @@ all: CMakeFiles/faceRecog.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/faceRecog.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles" 1
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/faceRecog.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles" 0
 .PHONY : CMakeFiles/faceRecog.dir/rule
 
 # Convenience name for target.

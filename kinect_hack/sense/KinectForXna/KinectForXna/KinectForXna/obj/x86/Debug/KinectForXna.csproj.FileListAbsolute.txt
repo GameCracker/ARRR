@@ -1,0 +1,7 @@
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\bin\x86\Debug\KinectForXna.exe
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\bin\x86\Debug\KinectForXna.pdb
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\obj\x86\Debug\KinectForXna.csprojResolveAssemblyReference.cache
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\obj\x86\Debug\KinectForXna.exe
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\obj\x86\Debug\KinectForXna.pdb
+C:\Users\phyllis\Dropbox\bci\x\ar\kinect_hack\sense\KinectForXna\KinectForXna\KinectForXna\bin\x86\Debug\KinectForXna.exe.config

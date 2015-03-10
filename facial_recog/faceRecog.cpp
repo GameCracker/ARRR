@@ -1,6 +1,8 @@
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/contrib/contrib.hpp"
 //#include "opencv2/videoio.hpp"
 #include <dirent.h>
 #include <sys/types.h>
@@ -8,6 +10,8 @@
 #include <stdio.h>
 #include <string>
 #include <cstdio>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 using namespace cv;
@@ -16,6 +20,7 @@ void detectAndDisplay(Mat frame);
 int file_count();
 int img_count();
 string exec_cmd(char* cmd);
+vector<Mat> read_imgs(string dir);
 string face_cascade_name = "haarcascade_frontalface_alt.xml";
 string eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
 CascadeClassifier face_cascade;
@@ -100,6 +105,10 @@ int file_count() {
   return i;
 }
 
+vector<Mat> read_imgs(string dir) {
+  
+}
+
   /** @function detectAndDisplay */
 void detectAndDisplay(Mat frame) {
   std::vector<Rect> faces;
@@ -109,9 +118,18 @@ void detectAndDisplay(Mat frame) {
   //  Mat border;
   Mat res;
   Mat sq_face;
+  Mat img_resize;
+  int if_predict = 0;
   int ifCrop = 0;
   int save_image = 1;
   int num_face = 0;
+  int major_vote;
+  string fn_haar = string(); // </path/to/haar_cascade>
+  string subj = "kelly";
+  string cur_img;
+  vector<Mat> images;
+  vector<int> labels;
+  int predicts [2] = {0, 0};
   //Rect faceRect(10, 10, 100, 100);
   Rect myROI(10, 10, 100, 100);
   IplImage* img;
@@ -145,6 +163,56 @@ void detectAndDisplay(Mat frame) {
       bitwise_and(frame_gray, border, res);
       imshow("square", sq_face);
       imshow("res", res);
+      int num = img_count();
+      if(num < 20) {
+        stringstream ss;
+        ss << num;
+        //char *tmp = itoa(num);
+        string nums = ss.str();
+        //string nums = to_string(num);
+        cur_img = "faces/rt_faces/kelly/" + subj + nums + ".jpg";
+        resize(sq_face, img_resize, size(255, 255));
+        imwrite(cur_img, img_resize);
+      } else if(num == 20) {
+        // train
+        string cur_img_dir = "faces/rt_faces/kelly"
+        images = read_imgs(cur_img_dir);
+        int face_w = images[0].cols;
+        int face_h = images[0].rows;
+        Ptr<FaceRecognizer> model = createFisherfaceRecognizer();
+        model->train(images, labels);
+        CascadeClassifier haar_cascade;
+        //haar_cascade.load(fn_haar);
+        resize(sq_face, img_resize, size(255, 255));
+        int predict = model->predict(img_resize);
+        if(predict == 0) {
+          // 0 means is kelly
+          predict_num[0] += 1;
+        } else {
+          predict_num[1] += 1;
+        }
+        if(predict_num[0] > 0)
+          major_vote = 0;
+        else
+          major_vote = 1;
+        if_predict = 1;
+      } else if((0 < if_predict) && (if_predict < 10)) {
+        // predict
+        resize(sq_face, img_resize, size(255, 255));
+        int predict = model->predict(img_resize);
+        if(predict == 0) {
+          predict_num[0] += 1;
+        } else {
+          predict_num[1] += 1;
+        }
+        if(predict_num[0] > predict_num[1]) {
+          major_vote = 0;
+        } else {
+          major_vote = 1;
+        }
+      } else {
+        if_predict = 2;
+      }
     }
     for(size_t j = 0; j < eyes.size(); j++) {
       //      cout << typeid(eyes[j]).name() << endl;
