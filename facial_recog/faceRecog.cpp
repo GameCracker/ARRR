@@ -13,6 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include <dirent.h>
+#include <vector>
 
 using namespace std;
 using namespace cv;
@@ -20,8 +21,12 @@ using namespace cv;
 void detectAndDisplay(Mat frame);
 int file_count();
 int img_count();
+vector<int> total_imgs();
 string exec_cmd(char* cmd);
 vector<Mat> read_imgs(string dirName);
+vector<Mat> read_stored_faces(string dirName);
+vector<Mat> read_vary_faces(string rt_dir);
+int count_dir_img(string dir);
 string face_cascade_name = "haarcascade_frontalface_alt.xml";
 string eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
 CascadeClassifier face_cascade;
@@ -78,6 +83,35 @@ string exec_cmd(char* cmd) {
   return result;
 }
 
+vector<int> total_imgs() {
+  string dirs[] = {"faces/mike/cc", "faces/alvin/cc", "faces/ethan/cc", "faces/yuki/cc"};
+  vector<int> counts;
+  for(int i=0; i<4; i++) {
+    counts.push_back(0);
+  }
+  printf("line %d in file %s\n", __LINE__, __FILE__);
+  for(int i=0; i<5; i++) {
+    int num = count_dir_img(dirs[i]);
+    cout << "line 91, num: " << num << endl;
+    counts[i] += num;
+    printf("line %d in file %s\n", __LINE__, __FILE__);
+  }
+  printf("line %d in file %s\n", __LINE__, __FILE__);
+  return counts;
+}
+
+int count_dir_img(string dir) {
+  string cmd = "ls -IR " + dir + "/*.jpg | wc -l";
+  cout << "line 96: " << cmd << endl;
+  char *ccmd = new char[cmd.length() + 1];
+  string result = "";
+  strcpy(ccmd, cmd.c_str());
+  result = exec_cmd(ccmd);
+  int num = atoi(result.c_str());
+  cout << ".jpg file num: " << num << endl;
+  return num;
+}
+
 int img_count() {
   string cmd = "ls -IR faces/rt_faces/kelly/*.jpg | wc -l";
   char *ccmd = new char[cmd.length() + 1];
@@ -106,7 +140,28 @@ int file_count() {
   return i;
 }
 
+vector<Mat> read_vary_faces(string rt_dir) {
+  string dirs[] = {"faces/mike/cc", "faces/alvin/cc", "faces/ethan/cc", "faces/yuki/cc"};
+  vector<string> dirVec;
+  dirVec.push_back(rt_dir);
+  for(int i=0; i<4; i++) {
+    dirVec.push_back(dirs[i]);
+  }
+  vector< vector<Mat> > imgVecs;
+  vector<Mat> allImgs;
+  for(int i=0; i<5; i++) {
+    imgVecs.push_back(read_imgs(dirVec[i]));
+  }
+  allImgs.reserve(5*(imgVecs[0].size()));
+  for(int i=0; i<5; i++) {
+    //cout << "image one row size: " << imgVecs[i].size() << endl;
+    allImgs.insert(allImgs.end(), imgVecs[i].begin(), imgVecs[i].end());
+  }
+  return allImgs;
+}
+
 vector<Mat> read_imgs(string dirName) {
+  Size size(255, 255);
   DIR *dir;
   dir = opendir(dirName.c_str());
   vector<Mat> imgVec;
@@ -119,6 +174,7 @@ vector<Mat> read_imgs(string dirName) {
         string imgPath(dirName + "/" + ent->d_name);
         Mat img = imread(imgPath);
         cvtColor(img, img, CV_BGR2GRAY);
+        resize(img, img, size);
         imgVec.push_back(img);
       }
     }
@@ -126,6 +182,7 @@ vector<Mat> read_imgs(string dirName) {
   } else {
     cout << "images not present" << endl;
   }
+  //cout << "imgVec.size: " << imgVec.size() << endl;
   return imgVec;
 }
 
@@ -183,12 +240,12 @@ void detectAndDisplay(Mat frame) {
     if(eyes.size() == 2) {
       Rect sqFace(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
       sq_face = frame_gray(sqFace).clone();
-      printf("line %d\n", __LINE__);
+      //printf("line %d\n", __LINE__);
       bitwise_and(frame_gray, border, res);
       imshow("square", sq_face);
       imshow("res", res);
       int num = img_count();
-      printf("line %d in file %s\n", __LINE__, __FILE__);
+      //printf("line %d in file %s\n", __LINE__, __FILE__);
       if(num < 20) {
         stringstream ss;
         ss << num;
@@ -203,21 +260,47 @@ void detectAndDisplay(Mat frame) {
         printf("line %d in file %s\n", __LINE__, __FILE__);
         // train
         string cur_img_dir = "faces/rt_faces/kelly";
-        images = read_imgs(cur_img_dir);
+        images = read_vary_faces(cur_img_dir);
         int face_w = images[0].cols;
         int face_h = images[0].rows;
+        // build label vector
         for(int t=0; t<20; t++) {
+          labels.push_back(0);
+        }
+        vector<int> label_count;
+        // label_count = total_imgs();
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
+        //int num_label = sizeof(label_count)/sizeof(label_count[0]);
+        //printf("line %d in file %s\n", __LINE__, __FILE__);
+        // for(int m=0; m<label_count.size(); m++) {
+        //   for(int k=0; k<label_count[m]; k++) {
+        //     labels.push_back(m + 1);
+        //   }
+        // }
+        for(int m=0; m<11; m ++) {
           labels.push_back(1);
         }
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        for(int m=0; m<26; m++) {
+          labels.push_back(2);
+        }
+        for(int m=0; m<51; m++) {
+          labels.push_back(3);
+        }
+        for(int m=0; m<60; m++) {
+          labels.push_back(4);
+        }
+        cout << "labels.size(): " << labels.size() << endl;
+        cout << "images.size(): " << images.size() << endl;
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         model->train(images, labels);
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         CascadeClassifier haar_cascade;
         //haar_cascade.load(fn_haar);
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         resize(sq_face, img_resize, size);
         printf("line %d in file %s\n", __LINE__, __FILE__);
         int predict = model->predict(img_resize);
+        cout << "line 303 predict: " << predict << endl;
         printf("line %d in file %s\n", __LINE__, __FILE__);
         if(predict == 0) {
           // 0 means is kelly
@@ -234,7 +317,7 @@ void detectAndDisplay(Mat frame) {
         if_predict = 1;
         turns += 1;
       } else if((if_predict == 1) && (turns < 41)) {
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         resize(sq_face, img_resize, size);
         printf("line %d in file %s\n", __LINE__, __FILE__);
         int predict = model->predict(img_resize);
@@ -260,7 +343,7 @@ void detectAndDisplay(Mat frame) {
       int radius = cvRound((eyes[i].width + eyes[j].height)*0.25);
       circle(frame, center, radius, Scalar(255, 0, 0), 4, 8, 0);
       //sq_face = frame(myROI);
-      printf("i: %zu, j: %zu\n", i, j);
+      //printf("i: %zu, j: %zu\n", i, j);
       //croppedEyes = frame();
       //crop = frame(myROI);
     }

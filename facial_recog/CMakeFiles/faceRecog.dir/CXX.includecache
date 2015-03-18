@@ -35,6 +35,8 @@ sstream
 -
 dirent.h
 -
+vector
+-
 
 /usr/local/include/opencv2/contrib/contrib.hpp
 opencv2/core/core.hpp
