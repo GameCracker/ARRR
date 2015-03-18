@@ -6,13 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp
+/media/psf/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp
 opencv2/objdetect/objdetect.hpp
-/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/objdetect/objdetect.hpp
+/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/objdetect/objdetect.hpp
 opencv2/highgui/highgui.hpp
-/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/highgui/highgui.hpp
+/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/highgui/highgui.hpp
 opencv2/imgproc/imgproc.hpp
-/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/imgproc/imgproc.hpp
+/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/imgproc/imgproc.hpp
+opencv2/core/core.hpp
+/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/core/core.hpp
+opencv2/contrib/contrib.hpp
+/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/contrib/contrib.hpp
 dirent.h
 -
 sys/types.h
@@ -24,6 +28,48 @@ stdio.h
 string
 -
 cstdio
+-
+fstream
+-
+sstream
+-
+dirent.h
+-
+
+/usr/local/include/opencv2/contrib/contrib.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/contrib/opencv2/core/core.hpp
+opencv2/imgproc/imgproc.hpp
+/usr/local/include/opencv2/contrib/opencv2/imgproc/imgproc.hpp
+opencv2/features2d/features2d.hpp
+/usr/local/include/opencv2/contrib/opencv2/features2d/features2d.hpp
+opencv2/objdetect/objdetect.hpp
+/usr/local/include/opencv2/contrib/opencv2/objdetect/objdetect.hpp
+opencv2/contrib/retina.hpp
+/usr/local/include/opencv2/contrib/opencv2/contrib/retina.hpp
+opencv2/contrib/openfabmap.hpp
+/usr/local/include/opencv2/contrib/opencv2/contrib/openfabmap.hpp
+
+/usr/local/include/opencv2/contrib/openfabmap.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/contrib/opencv2/core/core.hpp
+opencv2/features2d/features2d.hpp
+/usr/local/include/opencv2/contrib/opencv2/features2d/features2d.hpp
+vector
+-
+list
+-
+map
+-
+set
+-
+valarray
+-
+
+/usr/local/include/opencv2/contrib/retina.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/contrib/opencv2/core/core.hpp
+valarray
 -
 
 /usr/local/include/opencv2/core/core.hpp
@@ -107,6 +153,26 @@ emmintrin.h
 /usr/local/include/opencv2/core/emmintrin.h
 
 /usr/local/include/opencv2/core/version.hpp
+
+/usr/local/include/opencv2/features2d/features2d.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/features2d/opencv2/core/core.hpp
+opencv2/flann/miniflann.hpp
+/usr/local/include/opencv2/features2d/opencv2/flann/miniflann.hpp
+limits
+-
+
+/usr/local/include/opencv2/flann/config.h
+
+/usr/local/include/opencv2/flann/defines.h
+config.h
+/usr/local/include/opencv2/flann/config.h
+
+/usr/local/include/opencv2/flann/miniflann.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/flann/opencv2/core/core.hpp
+opencv2/flann/defines.h
+/usr/local/include/opencv2/flann/opencv2/flann/defines.h
 
 /usr/local/include/opencv2/highgui/highgui.hpp
 opencv2/core/core.hpp

@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <fstream>
 #include <sstream>
+#include <dirent.h>
 
 using namespace std;
 using namespace cv;
@@ -20,7 +21,7 @@ void detectAndDisplay(Mat frame);
 int file_count();
 int img_count();
 string exec_cmd(char* cmd);
-vector<Mat> read_imgs(string dir);
+vector<Mat> read_imgs(string dirName);
 string face_cascade_name = "haarcascade_frontalface_alt.xml";
 string eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
 CascadeClassifier face_cascade;
@@ -105,8 +106,27 @@ int file_count() {
   return i;
 }
 
-vector<Mat> read_imgs(string dir) {
-  
+vector<Mat> read_imgs(string dirName) {
+  DIR *dir;
+  dir = opendir(dirName.c_str());
+  vector<Mat> imgVec;
+  struct dirent *ent;
+  //string img_n;
+  if(dir != NULL) {
+    while((ent = readdir(dir)) != NULL) {
+      string cur_img(ent->d_name);
+      if((cur_img).find(".jpg") != string::npos) {
+        string imgPath(dirName + "/" + ent->d_name);
+        Mat img = imread(imgPath);
+        cvtColor(img, img, CV_BGR2GRAY);
+        imgVec.push_back(img);
+      }
+    }
+    closedir(dir);
+  } else {
+    cout << "images not present" << endl;
+  }
+  return imgVec;
 }
 
   /** @function detectAndDisplay */
@@ -124,18 +144,22 @@ void detectAndDisplay(Mat frame) {
   int save_image = 1;
   int num_face = 0;
   int major_vote;
+  int turns = 0;
   string fn_haar = string(); // </path/to/haar_cascade>
   string subj = "kelly";
   string cur_img;
   vector<Mat> images;
   vector<int> labels;
+  int predict_num[] = {0, 0};
   int predicts [2] = {0, 0};
   //Rect faceRect(10, 10, 100, 100);
   Rect myROI(10, 10, 100, 100);
   IplImage* img;
+  Size size(255, 255);
   //CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
   cvtColor(frame, frame_gray, CV_BGR2GRAY);
   equalizeHist(frame_gray, frame_gray);
+  Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
   // -- Detect faces
   face_cascade.detectMultiScale(frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30));
   for(size_t i = 0; i < faces.size(); i++) {
@@ -164,6 +188,7 @@ void detectAndDisplay(Mat frame) {
       imshow("square", sq_face);
       imshow("res", res);
       int num = img_count();
+      printf("line %d in file %s\n", __LINE__, __FILE__);
       if(num < 20) {
         stringstream ss;
         ss << num;
@@ -171,35 +196,49 @@ void detectAndDisplay(Mat frame) {
         string nums = ss.str();
         //string nums = to_string(num);
         cur_img = "faces/rt_faces/kelly/" + subj + nums + ".jpg";
-        resize(sq_face, img_resize, size(255, 255));
+        resize(sq_face, img_resize, size);
         imwrite(cur_img, img_resize);
+        turns += 1;
       } else if(num == 20) {
+        printf("line %d in file %s\n", __LINE__, __FILE__);
         // train
-        string cur_img_dir = "faces/rt_faces/kelly"
+        string cur_img_dir = "faces/rt_faces/kelly";
         images = read_imgs(cur_img_dir);
         int face_w = images[0].cols;
         int face_h = images[0].rows;
-        Ptr<FaceRecognizer> model = createFisherfaceRecognizer();
+        for(int t=0; t<20; t++) {
+          labels.push_back(1);
+        }
+        printf("line %d in file %s\n", __LINE__, __FILE__);
         model->train(images, labels);
+        printf("line %d in file %s\n", __LINE__, __FILE__);
         CascadeClassifier haar_cascade;
         //haar_cascade.load(fn_haar);
-        resize(sq_face, img_resize, size(255, 255));
+        printf("line %d in file %s\n", __LINE__, __FILE__);
+        resize(sq_face, img_resize, size);
+        printf("line %d in file %s\n", __LINE__, __FILE__);
         int predict = model->predict(img_resize);
+        printf("line %d in file %s\n", __LINE__, __FILE__);
         if(predict == 0) {
           // 0 means is kelly
           predict_num[0] += 1;
         } else {
           predict_num[1] += 1;
         }
-        if(predict_num[0] > 0)
+        if(predict_num[0] > 0) {
           major_vote = 0;
-        else
+        }
+        else {
           major_vote = 1;
+        }
         if_predict = 1;
-      } else if((0 < if_predict) && (if_predict < 10)) {
-        // predict
-        resize(sq_face, img_resize, size(255, 255));
+        turns += 1;
+      } else if((if_predict == 1) && (turns < 41)) {
+        printf("line %d in file %s\n", __LINE__, __FILE__);
+        resize(sq_face, img_resize, size);
+        printf("line %d in file %s\n", __LINE__, __FILE__);
         int predict = model->predict(img_resize);
+        cout << "predict: " << predict << endl;
         if(predict == 0) {
           predict_num[0] += 1;
         } else {
@@ -210,6 +249,7 @@ void detectAndDisplay(Mat frame) {
         } else {
           major_vote = 1;
         }
+        turns += 1;
       } else {
         if_predict = 2;
       }

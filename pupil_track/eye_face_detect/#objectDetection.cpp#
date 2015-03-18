@@ -59,14 +59,10 @@ void detectAndDisplay(Mat frame) {
   Mat crop;
   //  Mat border;
   Mat res;
-  Mat sq_face;
   int ifCrop = 0;
   Rect myROI(10, 10, 100, 100);
-  int save_image = 1;
-  int num_face = 0;
   cvtColor(frame, frame_gray, CV_BGR2GRAY);
-  equalizeHist(frame_gray, frame_gray);
-  // -- Detect faces
+  equalizeHist(frame_gray, frame_gray);  // -- Detect faces
   face_cascade.detectMultiScale(frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30));
   for(size_t i = 0; i < faces.size(); i++) {
     Point center(faces[i].x + faces[i].width*0.5, faces[i].y + faces[i].height*0.5);
@@ -95,13 +91,10 @@ void detectAndDisplay(Mat frame) {
       Point center(faces[i].x + eyes[j].x + eyes[j].width*0.5, faces[i].y + eyes[i].y + eyes[j].height*0.5);
       int radius = cvRound((eyes[i].width + eyes[j].height)*0.25);
       circle(frame, center, radius, Scalar(255, 0, 0), 4, 8, 0);
-      myROI(faces[i].x, face[i].y, radius*2, radius*2);
-      sq_face = frame(myROI);
       printf("i: %zu, j: %zu\n", i, j);
       //croppedEyes = frame();
-      //crop = frame(myROI);
+      crop = frame(myROI);
       ifCrop = 1;
-      //if(num_face)
     }
   }
   if(ifCrop == 1) { 
@@ -109,6 +102,5 @@ void detectAndDisplay(Mat frame) {
     //imshow("cropped eye", croppedEyes);
     //imshow(window_name, crop);
   }
-  imshow(
   imshow(window_name, frame);
 }

@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog"
+CMAKE_SOURCE_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog"
+CMAKE_BINARY_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
