@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/media/psf/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp" "/media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles/faceRecog.dir/faceRecog.cpp.o"
+  "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles/faceRecog.dir/faceRecog.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

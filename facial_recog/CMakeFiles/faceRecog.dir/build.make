@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
+CMAKE_SOURCE_DIR = "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /media/psf/Dropbox/bci/x/ar/facial_recog
+CMAKE_BINARY_DIR = "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/faceRecog.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/faceRecog.dir/flags.make
 
 CMakeFiles/faceRecog.dir/faceRecog.cpp.o: CMakeFiles/faceRecog.dir/flags.make
 CMakeFiles/faceRecog.dir/faceRecog.cpp.o: faceRecog.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles" $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/faceRecog.dir/faceRecog.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/faceRecog.dir/faceRecog.cpp.o -c /media/psf/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/faceRecog.dir/faceRecog.cpp.o -c "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp"
 
 CMakeFiles/faceRecog.dir/faceRecog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/faceRecog.dir/faceRecog.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /media/psf/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp > CMakeFiles/faceRecog.dir/faceRecog.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp" > CMakeFiles/faceRecog.dir/faceRecog.cpp.i
 
 CMakeFiles/faceRecog.dir/faceRecog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/faceRecog.dir/faceRecog.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /media/psf/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp -o CMakeFiles/faceRecog.dir/faceRecog.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp" -o CMakeFiles/faceRecog.dir/faceRecog.cpp.s
 
 CMakeFiles/faceRecog.dir/faceRecog.cpp.o.requires:
 .PHONY : CMakeFiles/faceRecog.dir/faceRecog.cpp.o.requires
@@ -136,6 +136,6 @@ CMakeFiles/faceRecog.dir/clean:
 .PHONY : CMakeFiles/faceRecog.dir/clean
 
 CMakeFiles/faceRecog.dir/depend:
-	cd /media/psf/Dropbox/bci/x/ar/facial_recog && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /media/psf/Dropbox/bci/x/ar/facial_recog /media/psf/Dropbox/bci/x/ar/facial_recog /media/psf/Dropbox/bci/x/ar/facial_recog /media/psf/Dropbox/bci/x/ar/facial_recog /media/psf/Dropbox/bci/x/ar/facial_recog/CMakeFiles/faceRecog.dir/DependInfo.cmake --color=$(COLOR)
+	cd "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog" "/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/CMakeFiles/faceRecog.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/faceRecog.dir/depend
 

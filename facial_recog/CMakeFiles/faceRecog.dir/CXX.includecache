@@ -6,17 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/media/psf/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp
 opencv2/objdetect/objdetect.hpp
-/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/objdetect/objdetect.hpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/objdetect/objdetect.hpp
 opencv2/highgui/highgui.hpp
-/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/highgui/highgui.hpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/highgui/highgui.hpp
 opencv2/imgproc/imgproc.hpp
-/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/imgproc/imgproc.hpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/imgproc/imgproc.hpp
 opencv2/core/core.hpp
-/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/core/core.hpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/core/core.hpp
 opencv2/contrib/contrib.hpp
-/media/psf/Dropbox/bci/x/ar/facial_recog/opencv2/contrib/contrib.hpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/contrib/contrib.hpp
 dirent.h
 -
 sys/types.h
