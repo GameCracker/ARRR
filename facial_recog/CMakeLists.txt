@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(faceRecog)
+project(faceRecog1)
 find_package(OpenCV REQUIRED)
-add_executable(faceRecog faceRecog.cpp)
-target_link_libraries(faceRecog ${OpenCV_LIBS})
+add_executable(faceRecog1 faceRecog1.cpp)
+target_link_libraries(faceRecog1 ${OpenCV_LIBS})

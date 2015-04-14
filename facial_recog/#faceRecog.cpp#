@@ -34,10 +34,6 @@ CascadeClassifier eyes_cascade;
 string fr_window_name = "Face Recognition";
 string window_name = "Capture - Eye & Face detection";
 RNG rng(12345);
-// map<int, char> name_map = {
-// 	{0: "Kelly"},
-// 	{1: "Alvin"}
-// };
 
 /** @function main */
 int main(int argc, const char** argv) {

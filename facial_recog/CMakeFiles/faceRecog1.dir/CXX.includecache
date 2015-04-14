@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog.cpp
+/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/faceRecog1.cpp
 opencv2/objdetect/objdetect.hpp
 /home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog/opencv2/objdetect/objdetect.hpp
 opencv2/highgui/highgui.hpp
@@ -36,6 +36,8 @@ sstream
 dirent.h
 -
 vector
+-
+map
 -
 
 /usr/local/include/opencv2/contrib/contrib.hpp

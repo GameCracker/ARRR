@@ -14,6 +14,7 @@
 #include <sstream>
 #include <dirent.h>
 #include <vector>
+#include <map>
 
 using namespace std;
 using namespace cv;
@@ -34,10 +35,7 @@ CascadeClassifier eyes_cascade;
 string fr_window_name = "Face Recognition";
 string window_name = "Capture - Eye & Face detection";
 RNG rng(12345);
-// map<int, char> name_map = {
-// 	{0: "Kelly"},
-// 	{1: "Alvin"}
-// };
+std::map<int, string> name_map;
 
 /** @function main */
 int main(int argc, const char** argv) {
@@ -276,31 +274,10 @@ void detectAndDisplay(Mat frame) {
           labels.push_back(0);
         }
         vector<int> label_count;
-        // label_count = total_imgs();
-        // printf("line %d in file %s\n", __LINE__, __FILE__);
-        //int num_label = sizeof(label_count)/sizeof(label_count[0]);
-        //printf("line %d in file %s\n", __LINE__, __FILE__);
-        // for(int m=0; m<label_count.size(); m++) {
-        //   for(int k=0; k<label_count[m]; k++) {
-        //     labels.push_back(m + 1);
-        //   }
-        // }
-        // for(int m=0; m<11; m ++) {
-        //   // 1 - mike
-        //   labels.push_back(1);
-        // }
         for(int m=0; m<20; m++) {
           // 1 - alvin, orl 26
           labels.push_back(1);
         }
-        // for(int m=0; m<20; m++) {
-        //   // 2 - ethan, ori 51
-        //   labels.push_back(2);
-        // }
-        // for(int m=0; m<20; m++) {
-        //   // 3 - yuki, ori 60
-        //   labels.push_back(3);
-        // }
         cout << "labels.size(): " << labels.size() << endl;
         for(vector<int>::const_iterator ii=labels.begin(); ii!=labels.end(); ++ii) {
         	cout << *ii << ' ';
@@ -375,20 +352,13 @@ void detectAndDisplay(Mat frame) {
       }
     }
     for(size_t j = 0; j < eyes.size(); j++) {
-      //      cout << typeid(eyes[j]).name() << endl;
       Point center(faces[i].x + eyes[j].x + eyes[j].width*0.5, faces[i].y + eyes[i].y + eyes[j].height*0.5);
       int radius = cvRound((eyes[i].width + eyes[j].height)*0.25);
       circle(frame, center, radius, Scalar(255, 0, 0), 4, 8, 0);
-      //sq_face = frame(myROI);
-      //printf("i: %zu, j: %zu\n", i, j);
-      //croppedEyes = frame();
-      //crop = frame(myROI);
     }
   }
   if(ifCrop == 1) { 
     cout << "ifCrop = 1" << endl;
-    //imshow("cropped eye", croppedEyes);
-    //imshow(window_name, crop);
   }
   //imshow(fr_window_name, rf_frame)
   imshow(window_name, frame);

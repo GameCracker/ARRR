@@ -116,7 +116,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=faceRecog
+CMAKE_PROJECT_NAME:STATIC=faceRecog1
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -188,10 +188,10 @@ OpenCV_LIB_DIR_DBG:PATH=
 OpenCV_LIB_DIR_OPT:PATH=
 
 //Value Computed by CMake
-faceRecog_BINARY_DIR:STATIC=/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog
+faceRecog1_BINARY_DIR:STATIC=/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog
 
 //Value Computed by CMake
-faceRecog_SOURCE_DIR:STATIC=/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog
+faceRecog1_SOURCE_DIR:STATIC=/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog
 
 
 ########################
@@ -264,7 +264,7 @@ CMAKE_GENERATOR:INTERNAL=Unix Makefiles
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Start directory with the top level CMakeLists.txt file for this
 // project
-CMAKE_HOME_DIRECTORY:INTERNAL=/media/psf/Dropbox/bci/x/ar/facial_recog
+CMAKE_HOME_DIRECTORY:INTERNAL=/home/parallels/Desktop/Parallels Shared Folders/Dropbox/bci/x/ar/facial_recog
 //Install .so files without execute permission.
 CMAKE_INSTALL_SO_NO_EXE:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER

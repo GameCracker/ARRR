@@ -99,41 +99,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named faceRecog
+# Target rules for targets named faceRecog1
 
 # Build rule for target.
-faceRecog: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 faceRecog
-.PHONY : faceRecog
+faceRecog1: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 faceRecog1
+.PHONY : faceRecog1
 
 # fast build rule for target.
-faceRecog/fast:
-	$(MAKE) -f CMakeFiles/faceRecog.dir/build.make CMakeFiles/faceRecog.dir/build
-.PHONY : faceRecog/fast
+faceRecog1/fast:
+	$(MAKE) -f CMakeFiles/faceRecog1.dir/build.make CMakeFiles/faceRecog1.dir/build
+.PHONY : faceRecog1/fast
 
-faceRecog.o: faceRecog.cpp.o
-.PHONY : faceRecog.o
+faceRecog1.o: faceRecog1.cpp.o
+.PHONY : faceRecog1.o
 
 # target to build an object file
-faceRecog.cpp.o:
-	$(MAKE) -f CMakeFiles/faceRecog.dir/build.make CMakeFiles/faceRecog.dir/faceRecog.cpp.o
-.PHONY : faceRecog.cpp.o
+faceRecog1.cpp.o:
+	$(MAKE) -f CMakeFiles/faceRecog1.dir/build.make CMakeFiles/faceRecog1.dir/faceRecog1.cpp.o
+.PHONY : faceRecog1.cpp.o
 
-faceRecog.i: faceRecog.cpp.i
-.PHONY : faceRecog.i
+faceRecog1.i: faceRecog1.cpp.i
+.PHONY : faceRecog1.i
 
 # target to preprocess a source file
-faceRecog.cpp.i:
-	$(MAKE) -f CMakeFiles/faceRecog.dir/build.make CMakeFiles/faceRecog.dir/faceRecog.cpp.i
-.PHONY : faceRecog.cpp.i
+faceRecog1.cpp.i:
+	$(MAKE) -f CMakeFiles/faceRecog1.dir/build.make CMakeFiles/faceRecog1.dir/faceRecog1.cpp.i
+.PHONY : faceRecog1.cpp.i
 
-faceRecog.s: faceRecog.cpp.s
-.PHONY : faceRecog.s
+faceRecog1.s: faceRecog1.cpp.s
+.PHONY : faceRecog1.s
 
 # target to generate assembly for a file
-faceRecog.cpp.s:
-	$(MAKE) -f CMakeFiles/faceRecog.dir/build.make CMakeFiles/faceRecog.dir/faceRecog.cpp.s
-.PHONY : faceRecog.cpp.s
+faceRecog1.cpp.s:
+	$(MAKE) -f CMakeFiles/faceRecog1.dir/build.make CMakeFiles/faceRecog1.dir/faceRecog1.cpp.s
+.PHONY : faceRecog1.cpp.s
 
 # Help Target
 help:
@@ -142,11 +142,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... faceRecog"
+	@echo "... faceRecog1"
 	@echo "... rebuild_cache"
-	@echo "... faceRecog.o"
-	@echo "... faceRecog.i"
-	@echo "... faceRecog.s"
+	@echo "... faceRecog1.o"
+	@echo "... faceRecog1.i"
+	@echo "... faceRecog1.s"
 .PHONY : help
 
 
