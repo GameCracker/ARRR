@@ -304,7 +304,8 @@ void detectAndDisplay(Mat frame) {
   // vector<int> wh = get_screen_size(weight, height);
   wh = get_screen_dim();
   Size sizeVideo(wh[0], wh[1]);
-  Mat frame_black(wh[0], wh[1], CV_8UC3);
+  Size org_size = frame.size();
+  Mat frame_black(org_size.height, org_size.width, CV_8UC3);
   frame_black = Scalar(0, 0, 0);
   // for(int i=0; i<frame_black.rows; i++) {
   //   for(int j=0; j<frame_black.cols; j++) {
@@ -320,6 +321,7 @@ void detectAndDisplay(Mat frame) {
     Mat border_sq(frame_gray.rows, frame_gray.cols, CV_8UC1, Scalar(0, 0, 0));
     ellipse(border, center, Size(faces[i].width*0.5, faces[i].height*0.5), 0, 0, 360, Scalar(255, 255, 255), -1, 8);
     ellipse(frame, center, Size(faces[i].width*0.5, faces[i].height*0.5), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
+    //ellipse(frame_black, center, Size(faces[i].width*0.5, faces[i].height*0.5), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
     Mat faceROI = frame_gray(faces[i]);
     std::vector<Rect> eyes;
     // -- In each face, detect eyes
@@ -328,6 +330,7 @@ void detectAndDisplay(Mat frame) {
       Rect sqFace(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
 	    Mat border(frame_gray.rows, frame_gray.cols, CV_8UC1, Scalar(0, 0, 0));
       rectangle(frame, Point(faces[i].x, faces[i].y), Point(faces[i].x + faces[i].width, faces[i].y + faces[i].height), Scalar(0, 0, 255));
+      rectangle(frame_black, Point(faces[i].x, faces[i].y), Point(faces[i].x + faces[i].width, faces[i].y + faces[i].height), Scalar(0, 0, 255));
       sq_face = frame_gray(sqFace).clone();
       bitwise_and(frame_gray, border, res);
       // uncommit this to see squared face captured!!!!!!!!!!!!!!!!!!!!!
@@ -393,6 +396,7 @@ void detectAndDisplay(Mat frame) {
         pos_x = faces[i].x;
         pos_y = faces[i].y - 5;
         putText(frame, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 0, 255), 2.0);
+        putText(frame_black, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 0, 255), 2.0);
       } else if((num == 20) && (if_predict == 1) && (turns < 41)) {
         // printf("line %d in file %s\n", __LINE__, __FILE__);
         resize(sq_face, img_resize, size);
@@ -406,6 +410,7 @@ void detectAndDisplay(Mat frame) {
           pos_x = faces[i].x;
           pos_y = faces[i].y - 5;
           putText(frame, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 0, 255), 2.0);
+          putText(frame_black, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 0, 255), 2.0);
         } else if(predict == 1) {
           predict_num[1] += 1;
           display_name = names[1];
@@ -413,6 +418,7 @@ void detectAndDisplay(Mat frame) {
           pos_x = faces[i].x;
           pos_y = faces[i].y - 5;
           putText(frame, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 0, 255), 2.0);
+          putText(frame_black, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 0, 255), 2.0);
         } else if(predict == 2) {
         	predict_num[2] += 1;
         } else if(predict == 3) {
@@ -435,6 +441,7 @@ void detectAndDisplay(Mat frame) {
       Point center(faces[i].x + eyes[j].x + eyes[j].width*0.5, faces[i].y + eyes[i].y + eyes[j].height*0.5);
       int radius = cvRound((eyes[i].width + eyes[j].height)*0.25);
       circle(frame, center, radius, Scalar(255, 0, 0), 4, 8, 0);
+      //circle(frame_black, center, radius, Scalar(255, 0, 0), 4, 8, 0);
     }
   }
   if(ifCrop == 1) { 
