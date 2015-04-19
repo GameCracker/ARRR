@@ -15,6 +15,15 @@
 #include <dirent.h>
 #include <vector>
 #include <map>
+#include <string.h>
+#include <unistd.h>
+#include <X11/Xlib.h>
+#include <X11/extensions/Xrandr.h>
+#include <stdlib.h>
+#include <X11/extensions/randr.h>
+#include <X11/extensions/Xrender.h>
+#include <X11/Xfuncproto.h>
+// #include <array>
 
 using namespace std;
 using namespace cv;
@@ -34,8 +43,13 @@ CascadeClassifier face_cascade;
 CascadeClassifier eyes_cascade;
 string fr_window_name = "Face Recognition";
 string window_name = "Capture - Eye & Face detection";
+string black_window_name = "AR Detector";
 RNG rng(12345);
 std::map<int, string> name_map;
+int count_dir_img(string dir);
+// vector<int> get_screen_size(int &weight, int &height);
+vector<int> get_screen_dim();
+vector<string> split(string &s, char delim, vector<string> &elems);
 
 /** @function main */
 int main(int argc, const char** argv) {
@@ -56,11 +70,11 @@ int main(int argc, const char** argv) {
     while(true) {
       frame = cvQueryFrame(capture);
       if(!frame.empty()) {
-	detectAndDisplay(frame);
+	     detectAndDisplay(frame);
       }
       else {
-	printf("--(!) No captured frame -- Break!");
-	break;
+      	printf("--(!) No captured frame -- Break!");
+      	break;
       }
       int c = waitKey(10);
       if((char)c == 'c')
@@ -69,6 +83,10 @@ int main(int argc, const char** argv) {
   }
   return 0;
 }
+
+// int main(int argc, const char** argv) {
+//   get_screen_dim();
+// }
 
 string exec_cmd(char* cmd) {
   FILE* pipe = popen(cmd, "r");
@@ -101,6 +119,55 @@ vector<int> total_imgs() {
   }
   printf("line %d in file %s\n", __LINE__, __FILE__);
   return counts;
+}
+
+// vector<int> get_screen_size(int &width, int &height) {
+//   vector<int> wh;
+//   int num_sizes1;
+//   Rotation original_rotation;
+//   Display *dpy = XOpenDisplay(NULL);
+//   Window root = RootWindow(dpy, 0);
+//   XRRScreenSize *xrrs = XRRSizes(dpy, 0, &num_sizes1);
+//   XRRScreenConfiguration *conf = XRRGetScreenInfo(dpy, root);
+//   short original_rate = XRRConfigCurrentRate(conf);
+//   SizeID original_size_id = XRRConfigCurrentConfiguration(conf, &original_rotation);
+//   width = xrrs[original_size_id].width;
+//   height = xrrs[original_size_id].height;
+//   XCloseDisplay(dpy);
+//   wh[0] = width;
+//   wh[1] = height;
+//   return wh;
+// }
+
+vector<string> split(string &s, char delim, vector<string> &elems) {
+  stringstream ss(s);
+  string item;
+  while(getline(ss, item, delim)) {
+    elems.push_back(item);
+  }
+  return elems;
+}
+
+vector<int> get_screen_dim() {
+  char delim = 'x';
+  vector<int> wh;
+  string dim = exec_cmd("xdpyinfo | grep dimensions");
+  size_t pos = dim.find(":");
+  dim = dim.substr(pos);
+  pos = dim.find("pixels");
+  dim = dim.substr(0, pos);
+  replace(dim.begin(), dim.end(), ':', ' ');
+  dim.erase(dim.find_last_not_of(" \n\r\t") + 1);
+  size_t first = dim.find_first_not_of(' ');
+  dim = dim.substr(first);
+  cout << "dim:" << dim << endl;
+  string w = dim.substr(0, 4);
+  string h = dim.substr(5);
+  wh.push_back(atoi(w.c_str()));
+  wh.push_back(atoi(h.c_str()));
+  // cout << "w:" << w << endl;
+  // cout << "h:" << h << endl;
+  return wh;
 }
 
 int count_dir_img(string dir) {
@@ -196,7 +263,7 @@ vector<Mat> read_imgs(string dirName) {
 
   /** @function detectAndDisplay */
 void detectAndDisplay(Mat frame) {
-  std::vector<Rect> faces;
+  vector<Rect> faces;
   Mat frame_gray;
   Mat croppedEyes;
   Mat crop;
@@ -211,7 +278,7 @@ void detectAndDisplay(Mat frame) {
   int major_vote;
   int turns = 0;
   int if_train = 1;
-  int pos_x, pos_y;
+  int pos_x, pos_y, weight, height;
   string fn_haar = string(); // </path/to/haar_cascade>
   string subj = "kelly";
   string cur_img;
@@ -220,6 +287,7 @@ void detectAndDisplay(Mat frame) {
   int predict_num[] = {0, 0, 0, 0, 0};
   int predicts [2] = {0, 0};
   vector<string> names;
+  vector<int> wh;
   names.push_back("Kelly");
   names.push_back("Alvin");
   string display_name;
@@ -228,10 +296,22 @@ void detectAndDisplay(Mat frame) {
   Rect myROI(10, 10, 100, 100);
   IplImage* img;
   Size size(255, 255);
-  //CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
+  //CvCapture* capture = cvCaptureFfromCAM(CV_CAP_ANY);
   cvtColor(frame, frame_gray, CV_BGR2GRAY);
   equalizeHist(frame_gray, frame_gray);
   Ptr<FaceRecognizer> model = createFisherFaceRecognizer();
+  // arrange window by desktop dim
+  // vector<int> wh = get_screen_size(weight, height);
+  wh = get_screen_dim();
+  Size sizeVideo(wh[0], wh[1]);
+  Mat frame_black(wh[0], wh[1], CV_8UC3);
+  frame_black = Scalar(0, 0, 0);
+  // for(int i=0; i<frame_black.rows; i++) {
+  //   for(int j=0; j<frame_black.cols; j++) {
+  //     frame_black<type>(i, j) = 255;
+  //   }
+  // }
+  // cout << "weight: " << wh[0] << ", height" << wh[1] << endl;
   // -- Detect faces
   face_cascade.detectMultiScale(frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30));
   for(size_t i = 0; i < faces.size(); i++) {
@@ -246,15 +326,15 @@ void detectAndDisplay(Mat frame) {
     eyes_cascade.detectMultiScale(faceROI, eyes, 1.1, 2, 0 |CV_HAAR_SCALE_IMAGE, Size(30, 30));
     if(eyes.size() == 2) {
       Rect sqFace(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
-	  Mat border(frame_gray.rows, frame_gray.cols, CV_8UC1, Scalar(0, 0, 0));
+	    Mat border(frame_gray.rows, frame_gray.cols, CV_8UC1, Scalar(0, 0, 0));
       rectangle(frame, Point(faces[i].x, faces[i].y), Point(faces[i].x + faces[i].width, faces[i].y + faces[i].height), Scalar(0, 0, 255));
       sq_face = frame_gray(sqFace).clone();
       bitwise_and(frame_gray, border, res);
-      imshow("square", sq_face);
+      // uncommit this to see squared face captured!!!!!!!!!!!!!!!!!!!!!
+      // imshow("square", sq_face);
       //imshow("res", res);
       int num = img_count();
       if(num < 20) {
-      	printf("line %d in file !!!!!!!!!!!!!!!!!!!!!%s\n", __LINE__, __FILE__);
         stringstream ss;
         ss << num;
         string nums = ss.str();
@@ -287,10 +367,10 @@ void detectAndDisplay(Mat frame) {
         CascadeClassifier haar_cascade;
         //haar_cascade.load(fn_haar);
         resize(sq_face, img_resize, size);
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         int predict = model->predict(img_resize);
         cout << "line 303 predict: " << predict << endl;
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         if(predict == 0) {
           // 0 means is kelly
           predict_num[0] += 1;
@@ -316,10 +396,10 @@ void detectAndDisplay(Mat frame) {
       } else if((num == 20) && (if_predict == 1) && (turns < 41)) {
         // printf("line %d in file %s\n", __LINE__, __FILE__);
         resize(sq_face, img_resize, size);
-        printf("line %d in file %s\n", __LINE__, __FILE__);
+        // printf("line %d in file %s\n", __LINE__, __FILE__);
         int predict = model->predict(img_resize);
         cout << "predict: " << predict << endl;
-        if(predict == 0) {
+        if(predict == 0) { 
           predict_num[0] += 1;
           display_name = names[0];
           box_text = "Prediction = " + display_name;
@@ -360,6 +440,14 @@ void detectAndDisplay(Mat frame) {
   if(ifCrop == 1) { 
     cout << "ifCrop = 1" << endl;
   }
-  //imshow(fr_window_name, rf_frame)
-  imshow(window_name, frame);
+  const char *w_name = window_name.c_str();
+  const char *w_name_black = black_window_name.c_str();
+  // cvNamedWindow(w_name_black, CV_WINDOW_NORMAL);
+  // cvSetWindowProperty(w_name_black, CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
+  cvNamedWindow(w_name, CV_WINDOW_NORMAL);
+  cvSetWindowProperty(w_name, CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
+  resize(frame, frame, sizeVideo);
+  // imshow(window_name, frame);
+  resize(frame_black, frame_black, sizeVideo);
+  imshow(black_window_name, frame_black);
 }

@@ -39,6 +39,22 @@ vector
 -
 map
 -
+string.h
+-
+unistd.h
+-
+X11/Xlib.h
+-
+X11/extensions/Xrandr.h
+-
+stdlib.h
+-
+X11/extensions/randr.h
+-
+X11/extensions/Xrender.h
+-
+X11/Xfuncproto.h
+-
 
 /usr/local/include/opencv2/contrib/contrib.hpp
 opencv2/core/core.hpp
