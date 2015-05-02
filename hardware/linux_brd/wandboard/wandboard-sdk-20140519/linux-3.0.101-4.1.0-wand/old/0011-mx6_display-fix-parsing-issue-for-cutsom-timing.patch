@@ -1,0 +1,129 @@
+From: Edward Lin <edward.lin@technexion.com>
+Date: Fri, 10 Jan 2014 18:22:37 +0800
+Subject: [PATCH 5/6] mx6_display : fix a bug parsing custom timings
+
+Signed-off-by: Edward Lin <edward.lin@technexion.com>
+---
+ arch/arm/mach-mx6/mx6_display.c | 72 +++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 43 deletions(-)
+
+diff --git a/arch/arm/mach-mx6/mx6_display.c b/arch/arm/mach-mx6/mx6_display.c
+index 2c60b74..bd88339 100644
+--- a/arch/arm/mach-mx6/mx6_display.c
++++ b/arch/arm/mach-mx6/mx6_display.c
+@@ -849,9 +849,6 @@ struct edm_display_device *edm_display_devices = NULL;
+ static void __init mx6_init_ipuv3_fb(void)
+ {
+ 	int i;
+-	char *hdmi_custom = "HDMI-CUSTOM";
+-	char *ldb_custom = NULL;
+-	char *lcd_custom = NULL;
+ 
+ 	if (edm_display_devices == NULL)
+ 		goto fallback_preset_ipufb_init;
+@@ -875,22 +872,18 @@ static void __init mx6_init_ipuv3_fb(void)
+ 				ipufb->disp_ch = MX6_LCD0;
+ 				break;
+ 			case EDM_LVDS0:
+-				ldb_custom = "LDB-CUSTOM";
+ 				strncpy(ipufb->disp_dev, "ldb", 4);
+ 				ipufb->disp_ch = MX6_LVDS0;
+ 				break;
+ 			case EDM_LVDSD_0_1:
+-				ldb_custom = "LDB-CUSTOM";
+ 				strncpy(ipufb->disp_dev, "ldb", 4);
+ 				ipufb->disp_ch = MX6_LVDSD;
+ 				break;
+ 			case EDM_LVDS1:
+-				ldb_custom = "LDB-CUSTOM2";
+ 				strncpy(ipufb->disp_dev, "ldb", 4);
+ 				ipufb->disp_ch = MX6_LVDS1;
+ 				break;
+ 			case EDM_LCD0:
+-				lcd_custom = "LCD-CUSTOM";
+ 				strncpy(ipufb->disp_dev, "lcd", 4);
+ 				ipufb->disp_ch = MX6_LCD0;
+ 				break;
+@@ -930,8 +923,6 @@ static void __init mx6_init_ipuv3_fb(void)
+ 		if (dev->timing.pixclock != 0) {
+ 			char string[200];
+ 			int i;
+-			int len;
+-			int size;
+ 			for (i = 0; i < 200; i++)
+ 				string[i] = '\0';
+ 			sprintf(string, "%u,%u,%u,%u,%u,%u,%u,%u,%u",
+@@ -944,44 +935,39 @@ static void __init mx6_init_ipuv3_fb(void)
+ 					dev->timing.vfp,
+ 					dev->timing.vbp,
+ 					dev->timing.vsw);
+-			len = strlen(string) + 1;
+-			size = len * sizeof(char);
+-			ipufb->timing_str = (char*)kmalloc(size, GFP_KERNEL);
+-			strncpy(ipufb->timing_str, string, len);
+-		}
+-		if (dev->mode_string != NULL) {
+-			char *string;
+-			if (dev->timing.pixclock != 0) {
+-				if (!strncmp(ipufb->disp_dev, "hdmi", 4)) {
+-					int len = strlen(hdmi_custom) + 1;
+-					int size = len * sizeof(char);
+-					string = (char *)kmalloc(size, GFP_KERNEL);
+-					strncpy(string, hdmi_custom, len);
+-					ipufb->mode_str = string;
+-				} else if (!strncmp(ipufb->disp_dev, "ldb", 3)) {
+-					int len = strlen(ldb_custom) + 1;
+-					int size = len * sizeof(char);
+-					string = (char *)kmalloc(size, GFP_KERNEL);
+-					strncpy(string, ldb_custom, len);
+-					ipufb->mode_str = string;
+-				} else if (!strncmp(ipufb->disp_dev, "lcd", 3)) {
+-					int len = strlen(lcd_custom) + 1;
+-					int size = len * sizeof(char);
+-					string = (char *)kmalloc(size, GFP_KERNEL);
+-					strncpy(string, lcd_custom, len);
+-					ipufb->mode_str = string;
++			ipufb->timing_str = kstrdup(string, GFP_KERNEL);
++			if ((ipufb->disp_ch == MX6_HDMI) ||
++				(ipufb->disp_ch == MX6_LVDS0) ||
++				(ipufb->disp_ch == MX6_LVDS1) ||
++				(ipufb->disp_ch == MX6_LVDSD) ||
++				(ipufb->disp_ch == MX6_LCD0)) {
++				char *str = NULL;
++				switch (ipufb->disp_ch) {
++				case MX6_HDMI:
++					str = kstrdup("HDMI-USER", GFP_KERNEL);
++					break;
++				case MX6_LVDS0:
++				case MX6_LVDSD:
++					str = kstrdup("LDB-USER1", GFP_KERNEL);
++					break;
++				case MX6_LVDS1:
++					str = kstrdup("LDB-USER2", GFP_KERNEL);
++					break;
++				case MX6_LCD0:
++					str = kstrdup("LCD-USER", GFP_KERNEL);
++					break;
++				default:
++					break;
+ 				}
+-			} else {
+-				int len = strlen(dev->mode_string) + 1;
+-				int size = len * sizeof(char);
+-				string = (char *)kmalloc(size, GFP_KERNEL);
+-				strncpy(string, dev->mode_string, len);
+-				ipufb->mode_str = string;
++				ipufb->mode_str = str;
+ 			}
+ 		}
+-		if (dev->bpp != 0) {
++		if ((dev->mode_string != NULL) && (ipufb->mode_str == NULL))
++			ipufb->mode_str = kstrdup(dev->mode_string, GFP_KERNEL);
++
++		if (dev->bpp != 0)
+ 			ipufb->default_bpp = dev->bpp;
+-		}
++
+ 		ipufb->int_clk = false;
+ 		ipufb->late_init = false;
+ 		mx6_nof_edm_displays++;

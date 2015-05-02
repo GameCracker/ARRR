@@ -1,0 +1,84 @@
+From: Edward Lin <edward.lin@technexion.com>
+Date: Fri, 10 Jan 2014 18:21:05 +0800
+Subject: [PATCH 4/6] mx6_display : fix coding style, add a printout for detailed
+ lvds timings
+
+Signed-off-by: Edward Lin <edward.lin@technexion.com>
+---
+ arch/arm/mach-mx6/mx6_display.c | 41 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 37 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/mach-mx6/mx6_display.c b/arch/arm/mach-mx6/mx6_display.c
+index d1db43f..2c60b74 100644
+--- a/arch/arm/mach-mx6/mx6_display.c
++++ b/arch/arm/mach-mx6/mx6_display.c
+@@ -548,9 +548,7 @@ static struct fsl_video_timing * timing_str_to_fsl_timing(char *timing_str)
+ 	if ((timing_str == NULL) || (strlen(timing_str) == 0))
+ 		return NULL;
+ 
+-	fsl_timing = (struct fsl_video_timing *)
+-		kmalloc(sizeof(struct fsl_video_timing),
+-		 GFP_KERNEL);
++	fsl_timing = kmalloc(sizeof(struct fsl_video_timing), GFP_KERNEL);
+ 	edm_disp_str_to_timing(&edm_timing, timing_str);
+ 	fsl_timing->pixclock	= edm_timing.pixclock;
+ 	fsl_timing->hres	= edm_timing.hres;
+@@ -734,6 +732,8 @@ enable_transmitter:
+ 		printk("HDMI : IPU %d, DI %d\n", mx6_hdmi_core_data.ipu_id, mx6_hdmi_core_data.disp_id);
+ 
+ 	if ((disp_ch[MX6_LVDS0] == 1) || (disp_ch[MX6_LVDS1] == 1) || (disp_ch[MX6_LVDSD] == 1)) {
++		char string[200];
++		int i;
+ 		printk("LVDS Mode : ");
+ 		switch(mx6_ldb_data.mode) {
+ 			case LDB_SIN0:
+@@ -765,7 +765,40 @@ enable_transmitter:
+ 				break;
+ 		}
+ 		printk("LVDS 1st : IPU %d, DI %d\n", mx6_ldb_data.ipu_id, mx6_ldb_data.disp_id);
++		for (i = 0; i < 200; i++)
++			string[i] = '\0';
++		if (mx6_ldb_data.lvds0_timing != NULL)
++			sprintf(string, "lvds0_timing : %u,%u,%u,%u,%u,%u,%u,%u,%u",
++				mx6_ldb_data.lvds0_timing->pixclock,
++				mx6_ldb_data.lvds0_timing->hres,
++				mx6_ldb_data.lvds0_timing->hfp,
++				mx6_ldb_data.lvds0_timing->hbp,
++				mx6_ldb_data.lvds0_timing->hsw,
++				mx6_ldb_data.lvds0_timing->vres,
++				mx6_ldb_data.lvds0_timing->vfp,
++				mx6_ldb_data.lvds0_timing->vbp,
++				mx6_ldb_data.lvds0_timing->vsw);
++		else
++			sprintf(string, "lvds0_timing : 0,0,0,0,0,0,0,0,0");
++		printk("%s\n", string);
+ 		printk("LVDS 2nd : IPU %d, DI %d\n", mx6_ldb_data.sec_ipu_id, mx6_ldb_data.sec_disp_id);
++		for (i = 0; i < 200; i++)
++			string[i] = '\0';
++		if (mx6_ldb_data.lvds1_timing != NULL)
++			sprintf(string, "lvds1_timing : %u,%u,%u,%u,%u,%u,%u,%u,%u",
++				mx6_ldb_data.lvds1_timing->pixclock,
++				mx6_ldb_data.lvds1_timing->hres,
++				mx6_ldb_data.lvds1_timing->hfp,
++				mx6_ldb_data.lvds1_timing->hbp,
++				mx6_ldb_data.lvds1_timing->hsw,
++				mx6_ldb_data.lvds1_timing->vres,
++				mx6_ldb_data.lvds1_timing->vfp,
++				mx6_ldb_data.lvds1_timing->vbp,
++				mx6_ldb_data.lvds1_timing->vsw);
++		else
++			sprintf(string, "lvds1_timing : 0,0,0,0,0,0,0,0,0");
++		printk("%s\n", string);
++
+ 	}
+ 
+ 	if (disp_ch[MX6_LCD0] == 1)
+@@ -1020,7 +1053,7 @@ void mx6_init_display(void)
+ 	mx6_display_ch_capability_setup(1, 0, 1, 1, 0, 0, 1);
+ 
+ #if defined(CONFIG_EDM)
+-	edm_display_devices = (struct edm_display_device *)kmalloc(mx6_max_displays * sizeof(struct edm_display_device), GFP_KERNEL);
++	edm_display_devices = kmalloc(mx6_max_displays * sizeof(struct edm_display_device), GFP_KERNEL);
+ 	if (edm_display_devices != NULL)
+ 		edm_display_init(saved_command_line, edm_display_devices, mx6_max_displays);
+ #endif

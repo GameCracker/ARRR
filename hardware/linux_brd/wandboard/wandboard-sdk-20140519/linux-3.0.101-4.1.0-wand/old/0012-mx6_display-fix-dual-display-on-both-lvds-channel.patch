@@ -1,0 +1,52 @@
+From: Edward Lin <edward.lin@technexion.com>
+Date: Fri, 10 Jan 2014 18:23:54 +0800
+Subject: [PATCH 6/6] mx6_display : fix dual display on both lvds channels
+
+Signed-off-by: Edward Lin <edward.lin@technexion.com>
+---
+ arch/arm/mach-mx6/mx6_display.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/arm/mach-mx6/mx6_display.c b/arch/arm/mach-mx6/mx6_display.c
+index bd88339..a176190 100644
+--- a/arch/arm/mach-mx6/mx6_display.c
++++ b/arch/arm/mach-mx6/mx6_display.c
+@@ -578,6 +578,7 @@ static void __init mx6_init_display_transmitter(struct ipuv3_fb_platform_data *i
+ 	int disp_ch[MX6_DISPCH_INVALID] = {0};
+ 	struct mx6_display_array * ref_setting = NULL;
+ 	char *string = NULL;
++	int first_lvds = -1;
+ 
+ 	if (mx6_nof_edm_displays == 0)
+ 		goto enable_transmitter;
+@@ -605,6 +606,8 @@ static void __init mx6_init_display_transmitter(struct ipuv3_fb_platform_data *i
+ 					mx6_ldb_data.mode = LDB_SIN0;
+ 					mx6_ldb_data.lvds0_timing =
+ 						timing_str_to_fsl_timing(str);
++					if (first_lvds < 0)
++						first_lvds = 0;
+ 				}
+ 				break;
+ 			case MX6_LVDS1:
+@@ -615,6 +618,8 @@ static void __init mx6_init_display_transmitter(struct ipuv3_fb_platform_data *i
+ 					mx6_ldb_data.mode = LDB_SIN1;
+ 					mx6_ldb_data.lvds1_timing =
+ 						timing_str_to_fsl_timing(str);
++					if (first_lvds < 0)
++						first_lvds = 1;
+ 				}
+ 				break;
+ 			case MX6_LVDSD:
+@@ -682,6 +687,12 @@ static void __init mx6_init_display_transmitter(struct ipuv3_fb_platform_data *i
+ 		mx6_lcdif_data.disp_id		= ref_setting->s_lcd0.disp_id;
+ 		mx6_dsi_pdata.ipu_id		= ref_setting->s_dsi0.ipu_id;
+ 		mx6_dsi_pdata.disp_id		= ref_setting->s_dsi0.disp_id;
++		if ((mx6_ldb_data.mode == SEP0) || (mx6_ldb_data.mode == SEP1)) {
++			if ((first_lvds >= 0) && (first_lvds == 0))
++				mx6_ldb_data.mode = SEP0;
++			else if ((first_lvds >= 0) && (first_lvds == 1))
++				mx6_ldb_data.mode = SEP1;
++		}
+ 
+ 	} else {
+ 		/* This is basically impossible for mx6s, mx6dl, mx6d, and mx6q */

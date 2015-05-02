@@ -1,0 +1,32 @@
+From: Edward Lin <edward.lin@technexion.com>
+Date: Fri, 10 Jan 2014 17:58:26 +0800
+Subject: [PATCH 2/6] mxc_ldb : modify mode name table and rename custom modes from
+ "LDB-CUSTOMx" to "LDB-USERx"
+
+Signed-off-by: Edward Lin <edward.lin@technexion.com>
+---
+ drivers/video/mxc/ldb.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/video/mxc/ldb.c b/drivers/video/mxc/ldb.c
+index a168cf5..69e7cb5 100644
+--- a/drivers/video/mxc/ldb.c
++++ b/drivers/video/mxc/ldb.c
+@@ -106,7 +106,7 @@ static int g_ldb_mode;
+ static struct fb_videomode ldb_modedb[] = {
+ 	{
+ 	/* 800x480 @ 60 Hz , pixel clk @ 32MHz */
+-	 "LDB-CUSTOM", 60, 800, 480, 29850,
++	 "LDB-USER1", 60, 800, 480, 29850,
+ 	 89, 164,
+ 	 23, 10,
+ 	 10, 10,
+@@ -115,7 +115,7 @@ static struct fb_videomode ldb_modedb[] = {
+ 	 0,},
+ 	{
+ 	/* 800x480 @ 60 Hz , pixel clk @ 32MHz */
+-	 "LDB-CUSTOM2", 60, 800, 480, 29850,
++	 "LDB-USER2", 60, 800, 480, 29850,
+ 	 89, 164,
+ 	 23, 10,
+ 	 10, 10,
