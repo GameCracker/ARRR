@@ -3,6 +3,7 @@
 
 CMakeFiles/eyeTrack1.dir/eyeTrack1.cpp.o
  /media/psf/Dropbox/bci/x/ar/pupil_track/eye_track1/eyeTrack1.cpp
+ /media/psf/Dropbox/bci/x/ar/pupil_track/eye_track1/mouse_control.h
  /usr/local/include/opencv2/calib3d/calib3d.hpp
  /usr/local/include/opencv2/contrib/contrib.hpp
  /usr/local/include/opencv2/contrib/openfabmap.hpp

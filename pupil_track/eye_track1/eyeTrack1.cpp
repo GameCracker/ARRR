@@ -3,6 +3,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <cmath>
 #include <stdio.h>
+#include "mouse_control.h"
 
 using namespace cv;
 
@@ -125,8 +126,9 @@ int rt_record() {
 }
 
 int main(int argc, char** argv) {
-  //rt_track1();
-  pupil_track();
+  virtual_keyboard();
+  rt_track1();
+  // pupil_track();
   //  rt_track();
   //rt_record();
   return 0;

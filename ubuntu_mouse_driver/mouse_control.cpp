@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <typeinfo>
+#include "mouse_control.h"
 
 using namespace std;
 
