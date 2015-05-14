@@ -1,7 +1,3 @@
-'''
-This module contais some common routines used by other samples.
-'''
-
 import numpy as np
 import cv2
 import os
