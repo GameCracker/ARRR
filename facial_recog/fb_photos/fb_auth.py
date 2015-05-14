@@ -49,7 +49,7 @@ def getUserDetails(access_token):
 ###########
  
 APP_ID = '405859292931281'
-APP_SECRET = '95530311a1cd1386bfd929b9f163e0b9'
+APP_SECRET = ''
 REDIRECT_URL = 'http://localhost:8000/registration/'
 CODE=''  ###HTTP GET Parameter received from Facebook 
  
