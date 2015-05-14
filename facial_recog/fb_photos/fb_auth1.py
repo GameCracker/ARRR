@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 
 FACEBOOK_APP_ID = '405859292931281'
-FACEBOOK_APP_SECRET = '95530311a1cd1386bfd929b9f163e0b9'
+FACEBOOK_APP_SECRET = ''
 FACEBOOK_PROFILE_ID = '100003271211216'
 #'ziqi.peng.92'
 
